@@ -1,9 +1,18 @@
 from tkinter import *
+import time
 
 choseong_list = [char for char in "ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ"]
 jungseong_list = [char for char in "ㅏㅐㅑㅒㅓㅔㅕㅖㅗㅘㅙㅚㅛㅜㅝㅞㅟㅠㅡㅢㅣ"]
 jongseong_list = [char for char in " ㄱㄲㄳㄴㄵㄶㄷㄹㄺㄻㄼㄽㄾㄿㅀㅁㅂㅄㅅㅆㅇㅈㅊㅋㅌㅍㅎ"]
-ko_dict = {'q':'ㅂ', 'Q':'ㅃ', 'w':'ㅈ', 'W':'ㅉ', 'e':'ㄷ', 'E':'ㄸ', 'r':'ㄱ', 'R':'ㄲ', 't':'ㅅ', 'T':'ㅆ', 'y':'ㅛ', 'u':'ㅕ', 'i':'ㅑ', 'o':'ㅐ', 'p':'ㅔ', 'a':'ㅁ', 's':'ㄴ', 'd':'ㅇ', 'f':'ㄹ', 'g':'ㅎ', 'h':'ㅗ', 'j':'ㅓ', 'k':'ㅏ', 'l':'ㅣ', 'z':'ㅋ', 'x':'ㅌ', 'c':'ㅊ', 'v':'ㅍ', 'b':'ㅠ', 'n':'ㅜ', 'm':'ㅡ', 'O':'ㅒ', 'P':'ㅖ', 'Y':'ㅛ', 'U':'ㅕ', 'I':'ㅑ', 'H':'ㅗ', 'J':'ㅓ', 'K':'ㅏ', 'L':'ㅣ', 'B':'ㅠ', 'N':'ㅜ', 'M':'ㅡ' }
+ko_dict = {'q':'ㅂ', 'Q':'ㅃ', 'w':'ㅈ', 'W':'ㅉ', 
+        'e':'ㄷ', 'E':'ㄸ', 'r':'ㄱ', 'R':'ㄲ', 't':'ㅅ', 
+        'T':'ㅆ', 'y':'ㅛ', 'u':'ㅕ', 'i':'ㅑ', 'o':'ㅐ', 
+        'p':'ㅔ', 'a':'ㅁ', 's':'ㄴ', 'd':'ㅇ', 'f':'ㄹ', 
+        'g':'ㅎ', 'h':'ㅗ', 'j':'ㅓ', 'k':'ㅏ', 'l':'ㅣ', 
+        'z':'ㅋ', 'x':'ㅌ', 'c':'ㅊ', 'v':'ㅍ', 'b':'ㅠ', 
+        'n':'ㅜ', 'm':'ㅡ', 'O':'ㅒ', 'P':'ㅖ', 'Y':'ㅛ', 
+        'U':'ㅕ', 'I':'ㅑ', 'H':'ㅗ', 'J':'ㅓ', 'K':'ㅏ', 
+        'L':'ㅣ', 'B':'ㅠ', 'N':'ㅜ', 'M':'ㅡ' }
 
 def main():
     
@@ -26,19 +35,21 @@ def main():
     label1 = Label(tk,text='영어\n(입력)').grid(row=0, column=0,padx=10)
     label2 = Label(tk,text='한글\n(변환결과)').grid(row=1,column=0,padx=10)
     label3 = Label(tk,text='Made by j-mook').grid(row=2,column=1,padx=10, sticky='se')
+
     # 각 단위 입력받는 부분 만들기
     text1 = Text(tk)
     text2 = Text(tk)
     text1.grid(row=0,column=1,padx=5, pady=10, ipadx=20, ipady=0)
     text2.grid(row=1,column=1,padx=5, ipadx=20, ipady=0)
 
+
     btn1 = Button(tk,text='한/영 변환',command=click_btn).grid(row=2,column=1, pady=10)
     btn2 = Button(tk,text='초기화',command=clear).grid(row=2,column=0, pady=10)
     tk.bind("<Key>", return_btn)
-    # tk.bind("<Shift-Return>", return_btn)
     tk.mainloop()
 
 def en2ko(main_input):
+    start_time = time.time()
     # convert en 2 ko
     ko_word = []
     for c in main_input:
@@ -79,21 +90,18 @@ def en2ko(main_input):
     output_list = []
     for char in words:
         jongseong_index = 0
-        if char[0] in choseong_list and (len(char) > 1 and char[1] in jungseong_list):
-            choseong_index = choseong_list.index(char[0])
-            jungseong_index = jungseong_list.index(char[1])
-            if len(char) > 2 and char[2] in jongseong_list:
-                jongseong_index = jongseong_list.index(char[2])
-                char.pop(0)
+        if len(char) > 1 and char[0] in choseong_list and char[1] in jungseong_list:
+            choseong_index = choseong_list.index(char.pop(0))
+            jungseong_index = jungseong_list.index(char.pop(0))
+            if len(char) > 0 and char[0] in jongseong_list:
+                jongseong_index = jongseong_list.index(char.pop(0))
             character_code = jongseong_index + 0xAC00 + (choseong_index * 21 * 28) + (jungseong_index * 28)
             output_list.append(chr(character_code))
-            char.pop(0)
-            char.pop(0)
-        # else:
         while char:
             output_list.append(char.pop(0))
 
     print("{}\t|    (변환)    |\n{}".format(main_input, ''.join(output_list)))
+    print('{} : {}'.format(len(main_input), time.time() - start_time))
     return ''.join(output_list)
 
 def make_jongseong_list(char_list):
@@ -139,6 +147,5 @@ def make_jungseong_list(char_list):
     if char_list[0]=='ㅡ' and char_list[1] == 'ㅣ':
         return "ㅢ"
     return char_list[0]
-
 
 main()
