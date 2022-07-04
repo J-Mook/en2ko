@@ -15,5 +15,8 @@ git clone https://github.com/J-Mook/en2ko.git
 bash make.sh
 ```
 
-## 원리
+## 실행파일
+
+* 맥OS - en2ko.app   
+* 윈도우 - en2ko.exe
 
