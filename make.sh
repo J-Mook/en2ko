@@ -5,7 +5,7 @@
 # echo $PYTHON_VER
 # fi
 CURDIR=$(pwd)
-pyinstaller -w --onefile --icon=/$CURDIR/src/en2ko_icon.ico /$CURDIR/en2ko.py -y
+pyinstaller --onefile -w --icon=/$CURDIR/src/en2ko_icon.ico /$CURDIR/en2ko.py -y
 rm -f $CURDIR/dist/en2ko
 cp -r $CURDIR/dist/$(ls $CURDIR/dist/) $CURDIR/
 rm -r -f build dist en2ko.spec
