@@ -82,11 +82,11 @@ def en2ko(main_input):
                 word[1] = make_jungseong_list(word[1:3])
                 if (b != word[1]):
                     word.pop(2)
-            if word[-1] in jongseong_list and word[-2] in jongseong_list:
-                b = word[-2]
-                word[2] = make_jongseong_list(word[-2:])
-                if (b != word[-2]):
-                    word.pop(-1)
+            if len(word) >= 4 and word[2] in jongseong_list and word[3] in jongseong_list:
+                b = word[2]
+                word[2] = make_jongseong_list(word[2:4])
+                if (b != word[2]):
+                    word.pop(3)
     print(words)
     
     #combine each letter
